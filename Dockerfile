@@ -30,6 +30,7 @@ ENV NODE_ENV=production \
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
+COPY railway/server.mjs /app/server.mjs
 COPY railway/start.sh /usr/local/bin/emdash-start
 RUN chmod 755 /usr/local/bin/emdash-start
 EXPOSE 8080

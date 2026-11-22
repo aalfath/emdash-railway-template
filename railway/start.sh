@@ -27,4 +27,4 @@ if [ -z "${EMDASH_SETUP_PASSWORD:-}" ]; then
 fi
 
 echo "[emdash-start] EmDash $(node -p 'require("/app/node_modules/emdash/package.json").version') on port ${PORT:-8080}, data in $DATA_DIR"
-exec node /app/dist/server/entry.mjs
+exec node /app/server.mjs
