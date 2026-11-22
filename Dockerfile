@@ -13,6 +13,9 @@ COPY app/ ./
 # Astro needs the public origin at build time to optimize images stored on the
 # volume. Railway passes the service variable of the same name as a build arg.
 ARG EMDASH_SITE_URL=""
+# Builders often report far more CPUs and RAM than the build may use; cap the
+# heap and the native thread pools so the build stays inside about 3 GB.
+ENV NODE_OPTIONS=--max-old-space-size=2048 RAYON_NUM_THREADS=2 UV_THREADPOOL_SIZE=4
 RUN EMDASH_SITE_URL="$EMDASH_SITE_URL" npm run build \
     && npm prune --omit=dev --no-audit --no-fund \
     && npm cache clean --force
