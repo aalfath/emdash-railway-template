@@ -1,0 +1,29 @@
+{
+  "name": "emdash-railway-template",
+  "version": "1.6.0",
+  "private": true,
+  "type": "module",
+  "emdash": {
+    "seed": "seed/seed.json"
+  },
+  "scripts": {
+    "build": "astro build",
+    "start": "node ./dist/server/entry.mjs"
+  },
+  "dependencies": {
+    "@astrojs/node": "11.1.5",
+    "@astrojs/react": "7.0.0",
+    "astro": "7.3.2",
+    "emdash": "1.6.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "lightningcss": "1.33.0"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": ">=22.16"
+  }
+}

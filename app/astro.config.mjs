@@ -1,0 +1,58 @@
+import node from "@astrojs/node";
+import react from "@astrojs/react";
+import { defineConfig, fontProviders, sessionDrivers } from "astro/config";
+import emdash, { local } from "emdash/astro";
+import { sqlite } from "emdash/db";
+import { Features } from "lightningcss";
+
+export default defineConfig({
+	output: "server",
+	// Railway template: logins live in the Astro session store, kept on the volume.
+	session: { driver: sessionDrivers.fsLite({ base: "/data/sessions" }) },
+	adapter: node({
+		mode: "standalone",
+	}),
+	image: {
+		layout: "constrained",
+		responsiveStyles: true,
+	},
+	vite: {
+		css: {
+			// Keep light-dark() native so the footer theme switcher works in
+			// production. For older browsers, Lightning CSS otherwise rewrites
+			// it into variables that follow only prefers-color-scheme, which the
+			// :root.light / :root.dark color-scheme rules in Base.astro can't
+			// reach. Browsers without light-dark() get the light fallback in
+			// tokens.css.
+			lightningcss: { exclude: Features.LightDark },
+		},
+	},
+	integrations: [
+		react(),
+		emdash({
+			// Railway template: database and media on the /data volume.
+			database: sqlite({ url: "file:/data/emdash.db" }),
+			storage: local({
+				directory: "/data/uploads",
+				baseUrl: "/_emdash/api/media/file",
+			}),
+		}),
+	],
+	fonts: [
+		{
+			provider: fontProviders.google(),
+			name: "Inter",
+			cssVariable: "--font-body",
+			weights: [400, 500, 600, 700],
+			fallbacks: ["sans-serif"],
+		},
+		{
+			provider: fontProviders.google(),
+			name: "JetBrains Mono",
+			cssVariable: "--font-mono",
+			weights: [400, 500],
+			fallbacks: ["monospace"],
+		},
+	],
+	devToolbar: { enabled: false },
+});
